@@ -1,0 +1,1 @@
+# Projects app for Content Writing Hackathon

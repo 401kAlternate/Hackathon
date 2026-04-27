@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}My Bids{% endblock %}
+{% block content %}
+<h1>My Bids</h1>
+{% if bids %}
+{% for bid in bids %}
+<div class="bid-card{% if bid.status == 'accepted' %} accepted{% endif %}">
+    <a href="{% url 'project_detail' bid.project.id %}"><strong>{{ bid.project.title }}</strong></a> - ${{ bid.bid_amount }}
+    <p>{{ bid.proposal|truncatewords:20 }}</p>
+    <div class="bid-meta"><span>{{ bid.timeline }} days</span><span>{{ bid.created_at|date:"M d, Y" }}</span></div>
+</div>
+{% endfor %}
+{% else %}<p>No bids yet. <a href="{% url 'project_list' %}">Browse projects</a></p>{% endif %}
+{% endblock %}

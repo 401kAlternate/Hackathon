@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Submit Work - {{ project.title }}{% endblock %}
+{% block content %}
+<div class="card" style="max-width: 700px; margin: 0 auto;">
+    <h2>Submit Work for "{{ project.title }}"</h2>
+    <div class="timer-component" style="margin-bottom: 1.5rem;">
+        <div class="timer-title">Time Remaining</div>
+        <div class="timer-countdown" data-writing-deadline="{{ project.writing_deadline|date:'U' }}000">{{ project.writing_time_remaining|floatformat:0 }}s</div>
+    </div>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group"><label class="form-label">Your Completed Work</label><textarea name="content" class="form-textarea" style="min-height: 300px;" required></textarea></div>
+        <button type="submit" class="btn btn-success" style="width: 100%;">Submit Work</button>
+    </form>
+</div>
+{% endblock %}

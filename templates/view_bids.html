@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Bids for {{ project.title }}{% endblock %}
+{% block content %}
+<a href="{% url 'project_detail' project.id %}">← Back to Project</a>
+<h2>Bids for "{{ project.title }}"</h2>
+{% if bids %}
+{% for bid in bids %}
+<div class="bid-card{% if bid.status == 'accepted' %} accepted{% endif %}">
+    <strong>{{ bid.writer.username }}</strong> - ${{ bid.bid_amount }}
+    <p>{{ bid.proposal }}</p>
+    <div class="bid-meta"><span>Timeline: {{ bid.timeline }} days</span><span>{{ bid.created_at|date:"M d, Y" }}</span></div>
+    {% if project.status in 'open,bidding' %}
+    <form method="post" style="margin-top: 1rem;">
+        {% csrf_token %}
+        <input type="hidden" name="bid_id" value="{{ bid.id }}">
+        <div class="grid grid-2">
+            <div class="form-group"><label>Writing Days</label><input type="number" name="writing_days" class="form-input" value="7"></div>
+            <button type="submit" class="btn btn-success">Select as Winner</button>
+        </div>
+    </form>
+    {% endif %}
+</div>
+{% endfor %}
+{% else %}<p>No bids yet.</p>{% endif %}
+{% endblock %}

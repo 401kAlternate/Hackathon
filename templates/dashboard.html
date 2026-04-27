@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>My Dashboard</h1>
+{% if role == 'client' %}
+<h2>My Projects</h2>
+{% if projects %}
+<div class="grid grid-2">
+    {% for project in projects %}
+    <div class="card">
+        <h3>{{ project.title }}</h3>
+        <p>{{ project.description|truncatewords:20 }}</p>
+        <div class="project-meta"><span>${{ project.offer_price }}</span><span>{{ project.deadline|date:"M d, Y" }}</span></div>
+        <a href="{% url 'project_detail' project.id %}" class="btn btn-sm btn-outline">View</a>
+        {% if project.status in 'open,bidding' %}<a href="{% url 'view_bids' project.id %}" class="btn btn-sm btn-primary">View Bids</a>{% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% else %}<p>No projects yet. <a href="{% url 'create_project' %}">Create one</a></p>{% endif %}
+<a href="{% url 'create_project' %}" class="btn btn-primary">+ New Project</a>
+{% else %}
+<h2>Projects I'm Working On</h2>
+{% if won_projects %}
+{% for project in won_projects %}
+<div class="card">
+    <h3>{{ project.title }}</h3>
+    <div class="timer-component">
+        <div class="timer-title">Time Remaining</div>
+        <div class="timer-countdown" data-writing-deadline="{{ project.writing_deadline|date:'U' }}000">{{ project.writing_time_remaining|floatformat:0 }}s</div>
+    </div>
+    <a href="{% url 'submit_work' project.id %}" class="btn btn-success">Submit Work</a>
+</div>
+{% endfor %}
+{% else %}<p>No active projects.</p>{% endif %}
+<h2>My Bids</h2>
+{% if bids %}
+{% for bid in bids %}
+<div class="bid-card">
+    <a href="{% url 'project_detail' bid.project.id %}">{{ bid.project.title }}</a> - ${{ bid.bid_amount }} ({{ bid.get_status_display }})
+</div>
+{% endfor %}
+{% else %}<p>No bids yet.</p>{% endif %}
+{% endif %}
+{% endblock %}

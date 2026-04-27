@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="hero">
+    <h1>Content Writing Hackathon</h1>
+    <p>Connect with clients, bid on projects, and showcase your writing skills</p>
+    <a href="{% url 'register' %}" class="btn btn-primary">Join as Writer</a>
+    <a href="{% url 'register' %}" class="btn btn-outline">Post a Project</a>
+</div>
+
+<h2>Open for Bidding</h2>
+{% if open_projects %}
+<div class="grid grid-3">
+    {% for project in open_projects %}
+    <div class="project-card">
+        <a href="{% url 'project_detail' project.id %}"><h3>{{ project.title }}</h3></a>
+        <p>{{ project.description|truncatewords:20 }}</p>
+        <div class="project-meta">
+            <span>${{ project.offer_price }}</span>
+            <span>{{ project.deadline|date:"M d, Y" }}</span>
+            <span class="status-badge status-{{ project.status }}">{{ project.get_status_display }}</span>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>No projects open for bidding.</p>
+{% endif %}
+{% endblock %}

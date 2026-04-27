@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Content Writing Hackathon{% endblock %}</title>
+    <link rel="stylesheet" href="{% load static %}{% static 'css/style.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="{% url 'home' %}" class="navbar-brand">📝 Hackathon</a>
+        <ul class="navbar-nav">
+            <li><a href="{% url 'project_list' %}">Browse Projects</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                {% if user.profile.role == 'client' %}
+                    <li><a href="{% url 'create_project' %}">Post Project</a></li>
+                {% endif %}
+                <li class="timer-display">
+                    {% if active_bidding_timer %}
+                    <div class="timer-item">
+                        <span class="timer-label">Bid:</span>
+                        <span class="timer-value" data-bidding-deadline="{{ active_bidding_timer.1 }}">{{ active_bidding_timer.2 }}</span>
+                    </div>
+                    {% endif %}
+                    {% if active_writing_timer %}
+                    <div class="timer-item">
+                        <span class="timer-label">Write:</span>
+                        <span class="timer-value" data-writing-deadline="{{ active_writing_timer.1 }}">{{ active_writing_timer.2 }}</span>
+                    </div>
+                    {% endif %}
+                </li>
+                <div class="navbar-user">
+                    <span>{{ user.username }} ({{ user.profile.role }})</span>
+                    <a href="{% url 'user_logout' %}" class="btn btn-sm btn-outline">Logout</a>
+                </div>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}" class="btn btn-primary btn-sm">Get Started</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <main class="container">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="message message-{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 Content Writing Hackathon. All rights reserved.</p>
+    </footer>
+
+    <script src="{% load static %}{% static 'js/timer.js' %}"></script>
+</body>
+</html>

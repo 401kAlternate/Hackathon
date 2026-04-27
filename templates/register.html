@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<div class="card" style="max-width: 500px; margin: 0 auto;">
+    <h2>Create Account</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="form-label">I want to join as:</label>
+            <div class="role-selector">
+                <label class="role-option"><input type="radio" name="role" value="writer" checked required><div class="role-icon">✍️</div><div class="role-title">Writer</div><div class="role-desc">Browse & bid on projects</div></label>
+                <label class="role-option"><input type="radio" name="role" value="client"><div class="role-icon">💼</div><div class="role-title">Client</div><div class="role-desc">Post writing projects</div></label>
+            </div>
+        </div>
+        <div class="form-group"><label class="form-label">Username</label><input type="text" name="username" class="form-input" required></div>
+        <div class="form-group"><label class="form-label">Email</label><input type="email" name="email" class="form-input" required></div>
+        <div class="form-group"><label class="form-label">Password</label><input type="password" name="password1" class="form-input" required></div>
+        <div class="form-group"><label class="form-label">Confirm Password</label><input type="password" name="password2" class="form-input" required></div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Create Account</button>
+    </form>
+    <p style="text-align: center;">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+</div>
+{% endblock %}
