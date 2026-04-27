@@ -32,7 +32,7 @@
                 </li>
                 <div class="navbar-user">
                     <span>{{ user.username }} ({{ user.profile.role }})</span>
-                    <a href="{% url 'user_logout' %}" class="btn btn-sm btn-outline">Logout</a>
+                    <a href="{% url 'logout' %}" class="btn btn-sm btn-outline">Logout</a>
                 </div>
             {% else %}
                 <li><a href="{% url 'login' %}">Login</a></li>
