@@ -1,1 +1,1 @@
-web: gunicorn hackathon_project.wsgi --log-file -
+web: gunicorn hackathon_project.wsgi:application --log-file -
